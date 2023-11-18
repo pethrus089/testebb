@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BB</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .menuLateral {
+            background-color: rgba(68, 65, 65, 0.778);
+            width: 120px;
+            height: 100%;
+            position: fixed;
+            overflow-y: auto;
+            font-size: 12px;
+            /* Adiciona uma barra de rolagem vertical, se necessário */
+        }
+
+        .menuLateral ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            /* Alinha os itens verticalmente */
+        }
+
+        .menuLateral li {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .menuLateral img {
+            width: 34px;
+            height: 34px;
+            margin-right: 10px;
+        }
+
+        .menuLateral a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .contemResposta {
+            background-color: #8A9CC2;
+            position: fixed;
+            left: 90px;
+            width: 500px;
+            height: 100%;
+            overflow-y: scroll;
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 14px;
+
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @import url('https://fonts.cdnfonts.com/css/glacial-indifference-2');
+
+        #total {
+            background-color: #545454;
+            border-radius: 30px;
+            height: 400px;
+            width: 320px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            border: solid 5px;
+            border-color: black;
+        }
+
+        #tela {
+            background-color: white;
+            width: 280px;
+            height: 130px;
+            color: black;
+            text-align: center;
+            border-radius: 24px;
+            border: solid 5px;
+            border-color: black;
+        }
+
+        #teclas {
+            display: inline-grid;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+        }
+
+        .lista {
+            background-color: white;
+            margin: 12px;
+            padding: 2px;
+            width: 288px;
+        }
+
+        .prin {
+            margin-top: -7px;
+            font-size: 18px;
+            text-align: left;
+            margin-left: 12px;
+            margin-bottom: -22px;
+        }
+
+        .depois {
+            margin: 0;
+            font-size: 35px;
+            text-align: center;
+        }
+
+        .digitar {
+            border: none;
+        }
+
+        .calculadora {
+            position: fixed;
+            left: 690px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="menuLateral">
+        <ul>
+            <li><img src="imagens/agulha.png" alt="needle"><br><a href="" >Agulhas</a></li>
+            <li><img src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/external-ink-print-those-icons-lineal-color-those-icons-1.png"
+                    alt="external-ink-print-those-icons-lineal-color-those-icons-1"><br><a href="#">tintas</a></li>
+            <li><img src="imagens/luvas.png"
+                    alt="external-page-pirates-icongeek26-glyph-icongeek26"><br><a href="#">Variados</a></li>
+            <li><img src="imagens/fixos.png" alt="payment-history"><br><a
+                    href="#">Gastos Fixos</a></li>
+            <li><img src="imagens/MAQUINETA.png" alt="credit-card-interest"><br><a
+                    href="#">Acrescimo Cartão</a></li>
+        </ul>
+    </nav>
+    <script>
+        var pagina;
+        var itensPedido = [];
+        let valorPedido = 0;
+        var orcamento;
+
+
+        function valorTotalPedido() {
+            orcamento = document.getElementById('depois')
+            let arredondadoDuasCasasDecimais = Math.round(valorPedido * 100) / 100;
+            orcamento.innerText = 'R$ ' + arredondadoDuasCasasDecimais;
+        }
+
+
+        // Suponha que você tenha uma função de clique em algum elemento
+        function handleClick(elemento) {
+            // Acessando o ID e a classe do elemento
+            const idDoElemento = elemento.id;
+            const classeDoElemento = elemento.className;
+
+            itensPedido.push(idDoElemento);
+            valorPedido = valorPedido + Number(classeDoElemento)
+
+            console.log("ID do elemento:", idDoElemento);
+            console.log("Classe do elemento:", classeDoElemento);
+            console.log("valor pedido: " + valorPedido);
+            valorTotalPedido();
+        }
+
+
+
+        function clicka() {
+            var subMenu = document.querySelector('div.contemResposta')
+
+            if (subMenu.classList.contains('hidden')) {
+                subMenu.classList.remove('hidden')
+            } else {
+                subMenu.classList.add('hidden');
+            }
+        }
+
+        var a = document.querySelectorAll('a')
+        a.forEach(element => {
+            element.addEventListener('click', function () {
+                event.preventDefault();
+                clicka();
+                if (element.innerText == 'Gastos Fixos') {
+                    pagina = 'gastos'
+                }
+                else if (element.innerText == 'Acrescimo Cartão') {
+                    pagina = 'acrecimos'
+                } else {
+                    pagina = element.innerText;
+                }
+
+                item();
+            })
+        });
+
+        function item() {
+            $(document).ready(function () {
+                $.ajax({
+                    url: pagina + '.php', // Caminho para o arquivo PHP
+                    type: 'GET', // Pode ser 'GET' ou 'POST'
+                    success: function (data) {
+                        // Quando a requisição for bem-sucedida, insira o resultado na div
+                        $('div.contemResposta').html(data);
+                    },
+                    error: function () {
+                        // Trate os erros aqui
+                        $('div.contemResposta').html('Ocorreu um erro ao carregar o conteúdo PHP.');
+                    }
+                });
+            });
+        }
+
+
+        function calcularGastosFixos() {
+            let valorLuzElement = document.getElementById('valorLuz');
+            let perLuzElement = document.getElementById('perLuz');
+            let perLucroElement = document.getElementById('perLucro')
+            //let alturaTatoo = document.getElementById('alturaTatoo');
+            //let larguraTatoo = document.getElementById('larguraTatoo');
+
+            // Obtenha os valores dos elementos ou use os placeholders se os valores não existirem
+            let valorLuz = parseFloat(valorLuzElement.value) || parseFloat(valorLuzElement.placeholder);
+            let perLuz = parseFloat(perLuzElement.value) || parseFloat(perLuzElement.placeholder);
+            let perLucro = parseFloat(perLucroElement.value) || parseFloat(perLucroElement.placeholder);
+
+            // Certifique-se de que valorLuz e perLuz são números válidos
+            if (isNaN(valorLuz) || isNaN(perLuz)) {
+                console.error("Os valores de valorLuz ou perLuz não são números válidos.");
+            } else {
+                // Faça os cálculos apenas se os valores forem números válidos
+                let totalLuz = (valorLuz / 100) * perLuz;
+                totalLuz = Math.round(totalLuz * 100) / 100;
+
+                valorPedido = valorPedido + totalLuz;
+                
+                valorPedido = valorPedido*(1+perLucro/100);
+
+                valorPedido = Math.round(valorPedido * 100) / 100;
+            }
+
+
+
+
+
+            valorTotalPedido();
+
+        }
+
+
+
+
+    </script>
+    <div class="contemResposta hidden">
+        <div id="resposta">
+
+        </div>
+    </div>
+    <div class="calculadora">
+        <div id="total">
+            <div id="tela">
+                <div class="prin">
+                    <p>Orçamento:</p>
+                </div>
+
+                <div class="depois" id="depois">
+                    <p>R$ </p>
+                </div>
+            </div>
+            <div id="teclas">
+<!--                 <div class="lista">Custos Variáveis: <input type="text" class="digitar"> </div>
+                <div class="lista">Custos Fixos: <input type="text" class="digitar"> </div>
+                <div class="lista">Perímetro: <input type="text" class="digitar"> </div>
+                <div class="lista">Lucro: <input type="text" class="digitar"> </div> -->
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
+
+</body>
+
+</html>
