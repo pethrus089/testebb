@@ -1,7 +1,7 @@
 <?php
 $server = "localhost";
 $user = "root";
-$pass = "MenorAgora";
+$pass = "";
 $db = "webScraping";
 
 //so pra eu lembrar como é que comenta nessa porra
